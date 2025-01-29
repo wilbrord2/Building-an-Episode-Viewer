@@ -15,7 +15,7 @@ const ShowDetails = [
   { label: "Network", value: "Adult Swim" },
   {
     label: "Producers",
-    value: "J. Michael Mendel (seasons 1–4), Kenny Micka (pilot)",
+    value: "J. Michael Mendel (seasons 1–5), Kenny Micka (pilot)",
   },
 ];
 

@@ -199,11 +199,11 @@ function MovieList() {
           {filteredEpisodes.map((ep) => (
             <li
               key={ep.id}
-              className="flex flex-col p-4 bg-gray-800 rounded-md shadow-md hover:bg-gray-700 transition cursor-pointer"
+              className="flex flex-col p-4 bg-gray-900 rounded-md shadow-md hover:bg-gray-800 hover:scale-105 hover:duration-300 transition cursor-pointer"
             >
-              <span className="text-gray-400 text-sm">{ep.episode}</span>
               <span className="text-lg font-semibold">{ep.name}</span>
               <span className="text-gray-400 text-sm">{ep.air_date}</span>
+              <span className="text-gray-400 text-xs">{ep.episode}</span>
             </li>
           ))}
         </ul>
