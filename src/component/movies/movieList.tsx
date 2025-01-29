@@ -1,19 +1,31 @@
 import { Icon } from "@iconify/react";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { fetchEpisodes } from "../../api";
+import { fetchEpisodes, fetchSingleEpisodes } from "../../api";
 import { EpisodesResponse, EpisodeType } from "../../../types";
 
-const seasons = [1,2,3,4,5];
-const episodes = [1,2,3,4,5,6,7,8,9,10];
+const List = [
+  {
+    title: "Season",
+    options: [1, 2, 3, 4, 5],
+  },
+  {
+    title: "Episode",
+    options: Array.from({ length: 51 }, (_, index) => index + 1), 
+  },
+];
+
 
 function MovieList() {
   const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
   const [selectedEpisode, setSelectedEpisode] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredEpisodes, setFilteredEpisodes] = useState<EpisodeType[]>([]);
+  const [filteredEpisodes, setFilteredEpisodes] = useState<
+    EpisodeType[]
+  >([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [episodesData, setEpisodesData] = useState<EpisodesResponse>({
     info: { count: 0, pages: 0, next: null, prev: null },
     results: [],
@@ -54,16 +66,27 @@ function MovieList() {
         ep.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+    if (selectedSeason) {
+      filtered = filtered.filter((ep) =>
+        ep.episode.includes(`S0${selectedSeason}`)
+      );
+    }
     setFilteredEpisodes(filtered);
-  }, [searchTerm, episodesData]);
+  }, [searchTerm, selectedSeason, episodesData]);
 
-  
+  const handleEpisode = async (value: number) => {
+    setLoading(true);
+    const data = await fetchSingleEpisodes(`episode/[${value}]`);
+     setFilteredEpisodes(data);
+    setLoading(false);
+  };
+
   const handlePageChange = (page: number) => {
     if (page > 0 && page <= episodesData.info.pages) {
       setCurrentPage(page);
     }
   };
-
+  // console.log({filteredEpisodes, episodesData})
   return (
     <div className="flex flex-col gap-6 py-8 px-4 text-gray-300 max-w-4xl mx-auto">
       {/* Filter Section */}
@@ -83,15 +106,84 @@ function MovieList() {
         </span>
 
         {/* Dropdowns */}
-       
+        <div className="relative flex gap-6 max-sm:flex-wrap" ref={dropdownRef}>
+          {List.map((item, index) => (
+            <div key={index} className="relative">
+              {/* Dropdown Button */}
+              <span
+                onClick={() =>
+                  setOpenDropdown(
+                    openDropdown === item.title ? null : item.title
+                  )
+                }
+                className="flex items-center gap-1 cursor-pointer hover:text-gray-300 transition text-gray-500 hover:border-slate-600 border p-3 rounded-md"
+              >
+                {item.title}:{" "}
+                <strong className="text-gray-300 text-nowrap">
+                  {item.title === "Season"
+                    ? selectedSeason || "Select"
+                    : selectedEpisode || "Select"}
+                </strong>
+                <Icon
+                  icon={
+                    openDropdown === item.title
+                      ? "eva:arrow-up-fill"
+                      : "eva:arrow-down-fill"
+                  }
+                  width="20"
+                  height="20"
+                />
+              </span>
 
+              {/* Dropdown List */}
+              <AnimatePresence>
+                {openDropdown === item.title && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-15 mr-8 left-0 h-64 overflow-y-scroll z-50 max-sm:w-36 w-44 bg-gray-800  border-gray-600 rounded-md shadow-lg overflow-hidden"
+                  >
+                    <ul className="text-white">
+                      {item.options.map((option, idx) => (
+                        <li
+                          key={idx}
+                          onClick={() => {
+                            item.title === "Season"
+                              ? setSelectedSeason(option)
+                              : (handleEpisode(option),
+                                setSelectedEpisode(option));
+                            setOpenDropdown(null);
+                          }}
+                          className="px-4 py-2 hover:bg-gray-700 cursor-pointer transition"
+                        >
+                          {item.title === "Season" ? "S " : "Ep "}
+                          {option}
+                        </li>
+                      ))}
+                      <li
+                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer transition"
+                        onClick={() => {
+                          setSelectedSeason(null),
+                            setOpenDropdown(null),
+                            setSelectedEpisode(null);
+                        }}
+                      >
+                        Clear
+                      </li>
+                    </ul>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
       </div>
-
-      {/* Episodes List */}
+      Episodes List
       <h1 className="text-xl font-semibold">
         Episodes ({filteredEpisodes.length})
       </h1>
-
       {/* Loading Indicator */}
       {loading ? (
         <div className="flex justify-center items-center py-6">
@@ -116,7 +208,6 @@ function MovieList() {
           ))}
         </ul>
       )}
-
       {/* Pagination */}
       <div className="flex items-center justify-center gap-4 mt-6">
         <button
