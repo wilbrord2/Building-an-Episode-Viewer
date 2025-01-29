@@ -11,18 +11,15 @@ const List = [
   },
   {
     title: "Episode",
-    options: Array.from({ length: 51 }, (_, index) => index + 1), 
+    options: Array.from({ length: 51 }, (_, index) => index + 1),
   },
 ];
-
 
 function MovieList() {
   const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
   const [selectedEpisode, setSelectedEpisode] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredEpisodes, setFilteredEpisodes] = useState<
-    EpisodeType[]
-  >([]);
+  const [filteredEpisodes, setFilteredEpisodes] = useState<EpisodeType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -77,7 +74,7 @@ function MovieList() {
   const handleEpisode = async (value: number) => {
     setLoading(true);
     const data = await fetchSingleEpisodes(`episode/[${value}]`);
-     setFilteredEpisodes(data);
+    setFilteredEpisodes(data);
     setLoading(false);
   };
 
@@ -194,15 +191,21 @@ function MovieList() {
             className="animate-spin"
           />
         </div>
+      ) : filteredEpisodes.length === 0 ? (
+        <div className="flex items-center justify-center w-full h-[300px] text-red-600 text-3xl text-center">
+          {" "}
+          Filter episodes by season or episode name to easily find the content
+          you're looking for.
+        </div>
       ) : (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {filteredEpisodes.map((ep) => (
             <li
               key={ep.id}
-              className="flex flex-col p-4 bg-gray-900 rounded-md shadow-md hover:bg-gray-800 hover:scale-105 hover:duration-300 transition cursor-pointer"
+              className="flex flex-col gap-2 p-4 bg-gray-900 rounded-md shadow-md hover:bg-gray-800 hover:scale-105 hover:duration-300 transition cursor-pointer"
             >
               <span className="text-lg font-semibold">{ep.name}</span>
-              <span className="text-gray-400 text-sm">{ep.air_date}</span>
+              <span className="text-gray-400 text-sm mt-2">{ep.air_date}</span>
               <span className="text-gray-400 text-xs">{ep.episode}</span>
             </li>
           ))}
