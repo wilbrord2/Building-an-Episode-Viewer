@@ -18,7 +18,11 @@
 
 ## About The Project
  
- This page offers an in-depth look at the 'Rick and Morty' TV series, featuring essential details in the header section, such as the show's writers, premiere dates, and other key information. Below, you’ll find a comprehensive list of episodes organized by season. The page also includes interactive filters, allowing you to easily search for episodes by their names, season, or episode number, providing a user-friendly experience for navigating through the series' extensive catalog and it is responsive across all the platform.
+ This page provides a detailed exploration of the Rick and Morty TV series. At the top, you'll find key information, including the show's writers, premiere dates, and other essential details.
+
+Below, episodes are organized by season in a structured and easy-to-navigate format. Interactive filters allow you to search for episodes by name, season, or episode number, ensuring a seamless browsing experience.
+
+Additionally, clicking on an episode reveals more in-depth details about it. The page is fully responsive, offering an optimal viewing experience across all platforms.
 
 ##### ⚠️ Some filters are mocked like name and season I am not calling the Api
 ##### ⚠️ Because the Api returns 20 items per page on mobile screen we have to scroll a long list

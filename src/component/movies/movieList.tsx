@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fetchEpisodes, fetchSingleEpisodes } from "../../api";
 import { EpisodesResponse, EpisodeType } from "../../../types";
 import profile from '../../assets/image1.jpg'
+import EpisodeModal from "./episodeModal";
 
 const List = [
   {
@@ -20,9 +21,13 @@ function MovieList() {
   const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
   const [selectedEpisode, setSelectedEpisode] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredEpisodes, setFilteredEpisodes] = useState<EpisodeType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [selectedEpisodeId, setSelectedEpisodeId] = useState<number | null>(
+     null
+   );
+
+  const [filteredEpisodes, setFilteredEpisodes] = useState<EpisodeType[]>([]);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [episodesData, setEpisodesData] = useState<EpisodesResponse>({
     info: { count: 0, pages: 0, next: null, prev: null },
@@ -84,7 +89,6 @@ function MovieList() {
       setCurrentPage(page);
     }
   };
-  // console.log({filteredEpisodes, episodesData})
   return (
     <div className="flex flex-col gap-6 py-8 px-4 text-gray-300  mx-auto">
       {/* Filter Section */}
@@ -200,8 +204,9 @@ function MovieList() {
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredEpisodes.map((ep) => (
             <li
+              onClick={() => setSelectedEpisodeId(ep.id)}
               key={ep.id}
-              className="overflow-hidden bg-gray-900 rounded-md shadow-md hover:bg-gray-800 hover:scale-105 hover:duration-300 transition"
+              className="overflow-hidden bg-gray-900 rounded-md shadow-md hover:bg-gray-800 hover:scale-105 hover:duration-300 cursor-pointer transition"
             >
               <div className="relative w-full h-[150px]">
                 <img
@@ -225,6 +230,15 @@ function MovieList() {
           ))}
         </ul>
       )}
+
+      {/* Modal */}
+      {selectedEpisodeId && (
+        <EpisodeModal
+          episodeId={selectedEpisodeId}
+          onClose={() => setSelectedEpisodeId(null)}
+        />
+      )}
+
       {/* Pagination */}
       <div className="flex items-center justify-center gap-4 mt-6">
         <button

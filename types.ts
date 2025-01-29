@@ -19,3 +19,11 @@ export type EpisodesResponse = {
   info: InfoType;
   results: EpisodeType[];
 };
+
+export type CharacterType = {
+  image: string;
+  name: string;
+  status: string;
+  gender: string;
+  species: string;
+};
