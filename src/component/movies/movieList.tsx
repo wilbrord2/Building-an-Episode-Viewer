@@ -114,10 +114,10 @@ function MovieList() {
                     openDropdown === item.title ? null : item.title
                   )
                 }
-                className="flex items-center gap-1 cursor-pointer hover:text-gray-300 transition text-gray-500 hover:border-slate-600 border p-3 rounded-md"
+                className=" group flex items-center gap-1 cursor-pointer hover:text-gray-300 transition text-gray-500 hover:border-slate-600 border p-3 rounded-md"
               >
                 {item.title}:{" "}
-                <strong className="text-gray-300 text-nowrap">
+                <strong className="text-gray-400 group-hover:text-gray-300 text-nowrap">
                   {item.title === "Season"
                     ? selectedSeason || "Select"
                     : selectedEpisode || "Select"}
@@ -178,7 +178,6 @@ function MovieList() {
           ))}
         </div>
       </div>
-      Episodes List
       <h1 className="text-xl font-semibold">
         Episodes ({filteredEpisodes.length})
       </h1>
@@ -198,13 +197,13 @@ function MovieList() {
           Episode is not available.
         </div>
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredEpisodes.map((ep) => (
             <li
               key={ep.id}
               className="overflow-hidden bg-gray-900 rounded-md shadow-md hover:bg-gray-800 hover:scale-105 hover:duration-300 transition"
             >
-              <div className="relative w-full h-[200px]">
+              <div className="relative w-full h-[150px]">
                 <img
                   src={profile}
                   alt="rick and morty episodes"
@@ -214,7 +213,7 @@ function MovieList() {
               </div>
 
               <span className="p-4 flex flex-col gap-2">
-                <span className="text-lg font-semibold text-white">
+                <span className="text-lg font-semibold text-gray-300">
                   {ep.name}
                 </span>
                 <span className="text-gray-400 text-sm mt-2">
