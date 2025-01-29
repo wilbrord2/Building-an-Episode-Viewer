@@ -35,7 +35,7 @@ To use this locally.
 
 1. Clone the repo 💫
    ```sh
-   https://github.com/wilbrord2/Building-an-Episode-Viewer.git
+   https://github.com/wilbrord2/NetpipoFrontend.git
    ```
 2. Install packages 📦.
 
