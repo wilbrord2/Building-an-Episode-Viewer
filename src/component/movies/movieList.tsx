@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchEpisodes, fetchSingleEpisodes } from "../../api";
 import { EpisodesResponse, EpisodeType } from "../../../types";
+import profile from '../../assets/image1.jpg'
 
 const List = [
   {
@@ -85,7 +86,7 @@ function MovieList() {
   };
   // console.log({filteredEpisodes, episodesData})
   return (
-    <div className="flex flex-col gap-6 py-8 px-4 text-gray-300 max-w-4xl mx-auto">
+    <div className="flex flex-col gap-6 py-8 px-4 text-gray-300  mx-auto">
       {/* Filter Section */}
       <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4">
         {/* Search Bar */}
@@ -194,19 +195,33 @@ function MovieList() {
       ) : filteredEpisodes.length === 0 ? (
         <div className="flex items-center justify-center w-full h-[300px] text-red-600 text-3xl text-center">
           {" "}
-          Filter episodes by season or episode name to easily find the content
-          you're looking for.
+          Episode is not available.
         </div>
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {filteredEpisodes.map((ep) => (
             <li
               key={ep.id}
-              className="flex flex-col gap-2 p-4 bg-gray-900 rounded-md shadow-md hover:bg-gray-800 hover:scale-105 hover:duration-300 transition"
+              className="overflow-hidden bg-gray-900 rounded-md shadow-md hover:bg-gray-800 hover:scale-105 hover:duration-300 transition"
             >
-              <span className="text-lg font-semibold">{ep.name}</span>
-              <span className="text-gray-400 text-sm mt-2">{ep.air_date}</span>
-              <span className="text-gray-400 text-xs">{ep.episode}</span>
+              <div className="relative w-full h-[200px]">
+                <img
+                  src={profile}
+                  alt="rick and morty episodes"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/30"></div>
+              </div>
+
+              <span className="p-4 flex flex-col gap-2">
+                <span className="text-lg font-semibold text-white">
+                  {ep.name}
+                </span>
+                <span className="text-gray-400 text-sm mt-2">
+                  {ep.air_date}
+                </span>
+                <span className="text-gray-400 text-xs">{ep.episode}</span>
+              </span>
             </li>
           ))}
         </ul>
